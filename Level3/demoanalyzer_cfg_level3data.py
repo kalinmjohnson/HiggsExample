@@ -7,7 +7,7 @@ process = cms.Process("Demo")
 
 # intialize MessageLogger and output report
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.cerr.threshold = 'INFO'
+process.MessageLogger.cerr.threshold = 'WARNING'
 process.MessageLogger.categories.append('Demo')
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(
         limit = cms.untracked.int32(-1)
