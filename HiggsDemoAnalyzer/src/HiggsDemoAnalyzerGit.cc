@@ -94,8 +94,6 @@
 #include "TTree.h"
 #include "TH2.h"
 #include "TLorentzVector.h"
-#include "TFile.h"
-#include <TMath.h>
 
 // for tracking information
 #include "DataFormats/TrackReco/interface/Track.h"
@@ -125,21 +123,11 @@
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
 
-
-
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <fstream>
-using namespace std;
-
-
 // class declaration
-class HiggsDemoAnalyzer: public edm::EDAnalyzer {
+class HiggsDemoAnalyzerGit: public edm::EDAnalyzer {
 public:
-  explicit HiggsDemoAnalyzer(const edm::ParameterSet&);
-  ~HiggsDemoAnalyzer();
+  explicit HiggsDemoAnalyzerGit(const edm::ParameterSet&);
+  ~HiggsDemoAnalyzerGit();
 
 private:
   virtual void beginJob();
@@ -154,44 +142,127 @@ private:
   // TTree *t2;
   // TTree *t3;
   
-  ofstream myfile4mu;
-  ofstream myfile4e;
-  ofstream myfile2mu2e;
-  ofstream myfile;
-  TTree *tree;
+  TH1D *h_globalmu_size;
+  TH1D *h_recomu_size;
+  TH1D *h_e_size;
 
-  // Muons
-  const static int max_mu = 100;
-  int value_mu_n = 0;
-  float value_mu_pt[max_mu];
-  float value_mu_eta[max_mu];
-  float value_mu_phi[max_mu];
-  float value_mu_mass[max_mu];
-  int value_mu_charge[max_mu];
-  float value_mu_pfreliso[max_mu];
-  float value_mu_pfrelisoDB[max_mu];
-  float value_mu_SIP3d[max_mu];
-  float value_mu_dxy[max_mu];
-  float value_mu_dz[max_mu];
-  float value_mu_isGM[max_mu];
-  const float mu_min_pt = 5;
-  
-  // Electrons
-  const static int max_el = 100;
-  int value_el_n = 0;
-  float value_el_pt[max_el];
-  float value_el_eta[max_el];
-  float value_el_phi[max_el];
-  float value_el_rawE[max_el];
-  int value_el_charge[max_el];
-  int value_el_misshits[max_el];
-  float value_el_pfreliso[max_mu];
-  float value_el_SIP3d[max_mu];
-  float value_el_dxy[max_mu];
-  float value_el_dz[max_mu];
-  const float el_min_pt = 5;
+  TH1D *h_nggmu;
+  TH1D *h_ngmu;
+  TH1D *h_nge;
 
-  
+  TH1D *h_m1_gmu;
+  TH1D *h_m2_gmu;
+  TH1D *h_m3_gmu;
+
+  TH1D *h_mZ_2mu;
+  TH1D *h_mZ_2e;
+
+  TH1D *h_mZ12_4mu;
+  TH1D *h_mZ34_4mu;
+  TH1D *h_mZ13_4mu;
+  TH1D *h_mZ24_4mu;
+  TH1D *h_mZ14_4mu;
+  TH1D *h_mZ23_4mu;
+  TH1D *h_mZa_4mu;
+  TH1D *h_mZb_4mu;
+  TH1D *h_m1_m4mu;
+  TH1D *h_m2_m4mu;
+  TH1D *h_m3_m4mu;
+  TH1D *h_m4_m4mu;
+
+  TH1D *h_mZ12_4e; 
+  TH1D *h_mZ34_4e;
+  TH1D *h_mZ13_4e;
+  TH1D *h_mZ24_4e;
+  TH1D *h_mZ14_4e;
+  TH1D *h_mZ23_4e;
+  TH1D *h_mZa_4e;
+  TH1D *h_mZb_4e;
+  TH1D *h_m1_m4e;
+  TH1D *h_m2_m4e;
+  TH1D *h_m3_m4e;
+  TH1D *h_m4_m4e;
+
+  TH1D *h_mZmu_2mu2e;
+  TH1D *h_mZe_2mu2e;
+  TH1D *h_mZa_2mu2e;
+  TH1D *h_mZb_2mu2e;
+  TH1D *h_m1_m2mu2e;
+  TH1D *h_m2_m2mu2e;
+  TH1D *h_m3_m2mu2e;
+  TH1D *h_m4_m2mu2e;
+
+  // Control Plot
+
+  // Global Muon
+  TH1D *h_p_gmu;
+  TH1D *h_pt_gmu_b4;
+  TH1D *h_eta_gmu_b4;
+  TH1D *h_chi2_gmu;
+  TH1D *h_phi_gmu;
+  TH1D *h_ndof_gmu;
+  TH1D *h_normchi2_gmu;
+  TH1D *h_validhits_gmu;
+  TH1D *h_pixelhits_gmu;
+
+  TH1D *h_pt_gmu_after;
+  TH1D *h_eta_gmu_after;
+
+  // Tracker Muon
+  TH1D *h_p_reco;
+  TH1D *h_pt_reco_b4;
+  TH1D *h_eta_reco_b4;
+  TH1D *h_phi_reco;
+  TH1D *h_chi2_reco;
+  TH1D *h_ndof_reco;
+  TH1D *h_normchi2_reco;
+
+  // PF Muon
+  TH1D *h_goodhit;
+  TH1D *h_dxy_mu;
+  TH1D *h_relPFIso_mu;
+
+  TH1D *h_relPFIso_mu_after;
+  TH1D *h_validhits_mu;
+  TH1D *h_pixelhits_mu;
+
+  TH1D *h_pt_after_Zto2mu;
+  TH1D *h_eta_after_Zto2mu;
+
+  TH1D *h_pt_after;
+  TH1D *h_eta_after;
+  TH1D *h_pt_after_2mu2e;
+  TH1D *h_eta_after_2mu2e;
+
+  // Electron
+  TH1D *h_p_e;
+  TH1D *h_et_e;
+  TH1D *h_pt_e_b4;
+  TH1D *h_eta_e_b4;
+  TH1D *h_phi_e;
+  TH1D *h_sc_eta;
+  TH1D *h_sc_rawE;
+  TH1D *h_relPFIso_e;
+  TH1D *h_relPFIso_e_after;
+  TH2D *h_relPFIso_pt_e;
+
+  TH1D *h_dxy_e;
+
+  TH1D *h_pt_e_after_Zto2e;
+  TH1D *h_eta_e_after_Zto2e;
+
+  TH1D *h_pt_e_after;
+  TH1D *h_eta_e_after;
+
+  TH1D *h_relPFIso_2mu_after;
+  TH1D *h_relPFIso_2e_after;
+
+  TH1D *h_pt_e_after_2mu2e;
+  TH1D *h_eta_e_after_2mu2e;
+
+  TH1D *h_SIP3d_mu_b4;
+  TH1D *h_SIP3d_e_b4;
+  TH1D *h_misshite;
 
   // Declare variables
   int  nGoodGlobalMuon, nGoodRecoMuon;
@@ -272,9 +343,6 @@ private:
 
   TLorentzVector p4Za, p4Zb, p4H;
 
-  bool muonTree = false;
-  bool elecTree = false;
-
 };
 
 //
@@ -289,7 +357,7 @@ private:
 // constructors and destructor
 //
 
-HiggsDemoAnalyzer::HiggsDemoAnalyzer(const edm::ParameterSet& iConfig) {
+HiggsDemoAnalyzerGit::HiggsDemoAnalyzerGit(const edm::ParameterSet& iConfig) {
 
   // *****************************************************************
   // This is the main analysis routine
@@ -304,38 +372,514 @@ HiggsDemoAnalyzer::HiggsDemoAnalyzer(const edm::ParameterSet& iConfig) {
   // book histograms and set axis labels
   // (called once for initialization)
   // ************************************
-  tree = fs->make<TTree>("Events", "Events");
-  
 
-  // Muons
-  tree->Branch("nMuon", &value_mu_n, "nMuon/i");
-  tree->Branch("Muon_pt", value_mu_pt, "Muon_pt[nMuon]/F");
-  tree->Branch("Muon_eta", value_mu_eta, "Muon_eta[nMuon]/F");
-  tree->Branch("Muon_phi", value_mu_phi, "Muon_phi[nMuon]/F");
-  tree->Branch("Muon_mass", value_mu_mass, "Muon_mass[nMuon]/F");
-  tree->Branch("Muon_charge", value_mu_charge, "Muon_charge[nMuon]/I");
-  tree->Branch("Muon_pfRelIso04_dBeta", value_mu_pfrelisoDB, "Muon_pfRelIso04_dBeta[nMuon]/F");
-  tree->Branch("Muon_pfRelIso04", value_mu_pfreliso, "Muon_pfRelIso04[nMuon]/F");
-  tree->Branch("Muon_SIP3d", value_mu_SIP3d, "value_mu_SIP3d[nMuon]/F");
-  tree->Branch("Muon_dxy", value_mu_dxy, "Muon_dxy[nMuon]/F");
-  tree->Branch("Muon_dz", value_mu_dz, "Muon_dz[nMuon]/F");
-  tree->Branch("Muon_isGM", value_mu_isGM, "Muon_isGM[nMuon]/F");
-  // Electrons
-  tree->Branch("nElectron", &value_el_n, "nElectron/i");
-  tree->Branch("Electron_pt", value_el_pt, "Electron_pt[nElectron]/F");
-  tree->Branch("Electron_eta", value_el_eta, "Electron_eta[nElectron]/F");
-  tree->Branch("Electron_phi", value_el_phi, "Electron_phi[nElectron]/F");
-  tree->Branch("Electron_rawE", value_el_rawE, "Electron_rawE[nElectron]/F");
-  tree->Branch("Electron_charge", value_el_charge, "Electron_charge[nElectron]/I");
-  tree->Branch("Electron_misshits", value_el_misshits, "Electron_misshits[nElectron]/F");
-  tree->Branch("Electron_pfRelIso", value_el_pfreliso, "Electron_pfRelIso[nElectron]/F");
-  tree->Branch("Electron_SIP3d", value_el_SIP3d, "value_mu_SIP3d[nElectron]/F");
-  tree->Branch("Electron_dxy", value_el_dxy, "Electron_dxy[nElectron]/F");
-  tree->Branch("Electron_dz", value_el_dz, "Electron_dz[nElectron]/F");
+  // Global Muon (GM) size
+  h_globalmu_size = fs->make<TH1D>("NGMuons", "GMuon size", 10, 0., 10.);
+  h_globalmu_size->GetXaxis()->SetTitle("Number of GMuons");
+  h_globalmu_size->GetYaxis()->SetTitle("Number of Events");
+
+  // Reco Muon (RM) size
+  h_recomu_size = fs->make<TH1D>("NMuons", "Reco muon size", 10, 0., 10.);
+  h_recomu_size->GetXaxis()->SetTitle("Number of Muons");
+  h_recomu_size->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron size
+  h_e_size = fs->make<TH1D>("Nelectrons", "Electron size", 10, 0., 10.);
+  h_e_size->GetXaxis()->SetTitle("Number of Electrons");
+  h_e_size->GetYaxis()->SetTitle("Number of Events");
+
+  // No. of good global muon 
+  h_nggmu = fs->make<TH1D>("NGoodGMuons", "No. of good global muon", 10, 0., 10.);
+  h_nggmu->GetXaxis()->SetTitle("Number of GMuons");
+  h_nggmu->GetYaxis()->SetTitle("Number of Events");
+
+  // No. of good reco muon 
+  h_ngmu = fs->make<TH1D>("NGoodRecMuons", "No. of good reco muon", 10, 0., 10.);
+  h_ngmu->GetXaxis()->SetTitle("Number of RMuons");
+  h_ngmu->GetYaxis()->SetTitle("Number of Events");
+
+  // No. of good electron
+  h_nge = fs->make<TH1D>("NGoodElectron", "No. of good electron", 10, 0., 10.);
+  h_nge->GetXaxis()->SetTitle("Number of Electrons");
+  h_nge->GetYaxis()->SetTitle("Number of Events");
+
+  // Dimuon mass spectrum up to 4 GeV (low mass range, rho/omega, phi, psi)with GM
+  h_m1_gmu = fs->make<TH1D>("GMmass", "Global Muon mass", 400, 0., 4.);
+  h_m1_gmu->GetXaxis()->SetTitle("Invariant Mass for Nmuon=2 (in GeV/c^2)");
+  h_m1_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Dimuon mass spectrum up to 120 GeV (high mass range: upsilon, Z) with GM
+  h_m2_gmu = fs->make<TH1D>("GMmass_extended", "GMmass", 240, 0., 120.);
+  h_m2_gmu->GetXaxis()->SetTitle("Invariant Mass for Nmuon=2 (in GeV/c^2)");
+  h_m2_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Dimuon mass spectrum up to 600 GeV with Global Muon
+  h_m3_gmu = fs->make<TH1D>("GMmass_extended_600", "GMmass", 240, 0., 600.);
+  h_m3_gmu->GetXaxis()->SetTitle("Invariant Mass for Nmuon=2 (in GeV/c^2)");
+  h_m3_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // ZTo2mu mass spectrum with reco muon
+  h_mZ_2mu = fs->make<TH1D>("massZto2muon", "mass of Z to 2 muon",120, 40., 120.);
+  h_mZ_2mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ_2mu->GetYaxis()->SetTitle("Number of Events");
+
+  // ZTo2e mass spectrum with Gsf electron
+  h_mZ_2e = fs->make<TH1D>("massZto2e", "mass of Z to 2e", 120, 40., 120.);
+  h_mZ_2e->GetXaxis()->SetTitle("Invariant Mass for Nelectron=2 (in GeV/c^2)");
+  h_mZ_2e->GetYaxis()->SetTitle("Number of Events");
+
+  // These histograms are for 4muon reconstruction with different combinations
+  
+  // First combination: 1234
+  // Mass Z12
+  h_mZ12_4mu = fs->make<TH1D>("mZ12_4mu", "mass of Z12", 75, 0., 150.);
+  h_mZ12_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ12_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z34
+  h_mZ34_4mu = fs->make<TH1D>("mZ34_4mu", "mass of Z34", 75, 0., 150.);
+  h_mZ34_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ34_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Second combination: 1324
+  // Mass Z13
+  h_mZ13_4mu = fs->make<TH1D>("mZ13_4mu", "mass of Z13", 75, 0., 150.);
+  h_mZ13_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ13_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z24
+  h_mZ24_4mu = fs->make<TH1D>("mZ24_4mu", "mass of Z24", 75, 0., 150.);
+  h_mZ24_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon");
+  h_mZ24_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Third combination: 1423
+  // Mass Z14
+  h_mZ14_4mu = fs->make<TH1D>("mZ14_4mu", "mass of Z14", 75, 0., 150.);
+  h_mZ14_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ14_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z23
+  h_mZ23_4mu = fs->make<TH1D>("mZ23_4mu", "mass of Z23", 75, 0., 150.);
+  h_mZ23_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZ23_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Za: mass of ZTo2mu closest to Z mass
+  h_mZa_4mu = fs->make<TH1D>("mZa_4mu", "mass Za", 120, 0., 120.);
+  h_mZa_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZa_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Zb: mass of ZTo2mu not closest to Z mass
+  h_mZb_4mu = fs->make<TH1D>("mZb_4mu", "mass Zb", 120, 0., 120.);
+  h_mZb_4mu->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZb_4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // 4muon mass spectrum with reco muon (paper 7 TeV)
+  h_m1_m4mu = fs->make<TH1D>("mass4mu_7TeV", "mass of 4 muon", 51, 98., 608.);
+  h_m1_m4mu->GetXaxis()->SetTitle("Invariant mass of 4muons (in GeV/c^2)");
+  h_m1_m4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // 4muon mass spectrum with reco muon (paper 8TeV)
+  h_m2_m4mu = fs->make<TH1D>("mass4mu_8TeV", "mass of 4 muon", 74, 70., 810.);
+  h_m2_m4mu->GetXaxis()->SetTitle("Invariant mass of 4muons (in GeV/c^2)");
+  h_m2_m4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // 4muon mass spectrum with reco muon (paper 8TeV lower range)
+  h_m3_m4mu = fs->make<TH1D>("mass4mu_8TeV_low", "mass of 4 muon", 37, 70., 181.);
+  h_m3_m4mu->GetXaxis()->SetTitle("Invariant mass of 4muons (in GeV/c^2)");
+  h_m3_m4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // 4muon mass spectrum with reco muon (full mass range)
+  h_m4_m4mu = fs->make<TH1D>("mass4mu_full", "mass of 4 muon", 300, 0., 900.);
+  h_m4_m4mu->GetXaxis()->SetTitle("Invariant mass of 4muons (in GeV/c^2)");
+  h_m4_m4mu->GetYaxis()->SetTitle("Number of Events");
+
+  // These histograms are for 4electron reconstruction with different combinations
+  
+  // First combination: 1234
+  // Mass Z12
+  h_mZ12_4e = fs->make<TH1D>("mZ12_4e", "mass of Z12", 75, 0., 150.);
+  h_mZ12_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ12_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z34
+  h_mZ34_4e = fs->make<TH1D>("mZ34_4e", "mass of Z34", 75, 0., 150.);
+  h_mZ34_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ34_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Second combination: 1324
+  // Mass Z13
+  h_mZ13_4e = fs->make<TH1D>("mZ13_4e", "mass of Z13", 75, 0., 150.);
+  h_mZ13_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ13_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z24
+  h_mZ24_4e = fs->make<TH1D>("mZ24_4e", "mass of Z24", 75, 0., 150.);
+  h_mZ24_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ24_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Third combination: 1423
+  // Mass Z14
+  h_mZ14_4e = fs->make<TH1D>("mZ14_4e", "mass of Z14", 75, 0., 150.);
+  h_mZ14_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ14_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Z23
+  h_mZ23_4e = fs->make<TH1D>("mZ23_4e", "mass of Z23", 75, 0., 150.);
+  h_mZ23_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZ23_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Za: mass of Z closest to Z mass
+  h_mZa_4e = fs->make<TH1D>("mZa_4e", "mass Za", 120, 0., 120.);
+  h_mZa_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZa_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Zb: mass of Z not closest to Z mass
+  h_mZb_4e = fs->make<TH1D>("mZb_4e", "mass Zb", 120, 0., 120.);
+  h_mZb_4e->GetXaxis()->SetTitle("Invariant mass of dielectron (in GeV/c^2)");
+  h_mZb_4e->GetYaxis()->SetTitle("Number of Events");
+
+  // 4electron mass spectrum with Gsf Electron (paper 7TeV)
+  h_m1_m4e = fs->make<TH1D>("mass4e_7TeV", "mass of 4 electron", 51, 98., 608.);
+  h_m1_m4e->GetXaxis()->SetTitle("Invariant mass of 4e (in GeV/c^2)");
+  h_m1_m4e->GetYaxis()->SetTitle("Number of Events");
+
+  // 4electron mass spectrum with Gsf Electron (paper 8TeV)
+  h_m2_m4e = fs->make<TH1D>("mass4e_8TeV", "mass of 4 electron", 74, 70., 810.);
+  h_m2_m4e->GetXaxis()->SetTitle("Invariant mass of 4e (in GeV/c^2)");
+  h_m2_m4e->GetYaxis()->SetTitle("Number of Events");
+
+  // 4electron mass spectrum with Gsf Electron (paper 8TeV lower range)
+  h_m3_m4e = fs->make<TH1D>("mass4e_8TeV_low", "mass 4 electron", 37, 70., 181.);
+  h_m3_m4e->GetXaxis()->SetTitle("Invariant mass of 4e (in GeV/c^2)");
+  h_m3_m4e->GetYaxis()->SetTitle("Number of Events");
+
+  // 4electron mass spectrum with Gsf Electron (full mass range)
+  h_m4_m4e = fs->make<TH1D>("mass4e_full", "mass of 4 electron", 300, 0., 900.);
+  h_m4_m4e->GetXaxis()->SetTitle("Invariant mass of 4e (in GeV/c^2)");
+  h_m4_m4e->GetYaxis()->SetTitle("Number of Events");
+
+  
+  // These histograms are for 2mu2e reconstruction with different combinations
+  
+  // Mass of Z to 2mu from 2mu2e
+  h_mZmu_2mu2e = fs->make<TH1D>("massZmu_2mu2e", "mass Z2mu:2mu2e", 75, 0., 150.);
+  h_mZmu_2mu2e->GetXaxis()->SetTitle("Invariant mass of Z1 (in GeV/c^2)");
+  h_mZmu_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass of Z to 2e from 2mu2e
+  h_mZe_2mu2e = fs->make<TH1D>("massZe_2mu2e", "mass Z2e:2mu2e", 75, 0., 150.);
+  h_mZe_2mu2e->GetXaxis()->SetTitle("Invariant Mass of Z2 (in GeV/c^2)");
+  h_mZe_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Za: mass of Z1 closest to Z mass
+  h_mZa_2mu2e = fs->make<TH1D>("mZa_2mu2e", "mass Z higher", 120, 0., 120.);
+  h_mZa_2mu2e->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZa_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Mass Zb: mass of Z2 not closest to Z mass
+  h_mZb_2mu2e = fs->make<TH1D>("mZb_2mu2e", "mass Z lower", 120, 0., 120.);
+  h_mZb_2mu2e->GetXaxis()->SetTitle("Invariant mass of dimuon (in GeV/c^2)");
+  h_mZb_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // 2muon 2electron mass spectrum (paper 7TeV)
+  h_m1_m2mu2e = fs->make<TH1D>("mass2mu2e_7TeV", "mass of 2mu2e", 51, 98., 608.);
+  h_m1_m2mu2e->GetXaxis()->SetTitle("Invariant mass of 2mu2e (in GeV/c^2)");
+  h_m1_m2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // 2muon 2electron mass spectrum (paper 8TeV)
+  h_m2_m2mu2e = fs->make<TH1D>("mass2mu2e_8TeV", "mass of 2mu2e", 74, 70., 810.);
+  h_m2_m2mu2e->GetXaxis()->SetTitle("Invariant mass of 2mu2e (in GeV/c^2)");
+  h_m2_m2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // 2muon 2electron mass spectrum (paper 8TeV lower range)
+  h_m3_m2mu2e = fs->make<TH1D>("mass2mu2e_8TeV_low", "mass 2mu2e", 37, 70., 181.);
+  h_m3_m2mu2e->GetXaxis()->SetTitle("Invariant mass of 2mu2e (in GeV/c^2)");
+  h_m3_m2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // 2muons 2electrons mass spectrum full mass range
+  h_m4_m2mu2e = fs->make<TH1D>("mass2mu2e_full", "mass of 2mu2e", 300, 0., 900.);
+  h_m4_m2mu2e->GetXaxis()->SetTitle("Invariant mass of 2mu2e (in GeV/c^2)");
+  h_m4_m2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  
+  //////////////////////////// CONTROL PLOTS /////////////////////////////////////
+  // Below are the histograms for the control plots
+
+  //---- Control plots for dimuons, similar to those of the dimuon example -----//
+  
+  // Momentum of Global Muon
+  h_p_gmu = fs->make<TH1D>("GM_momentum", "GM momentum", 200, 0., 200.);
+  h_p_gmu->GetXaxis()->SetTitle("Momentum (GeV/c)");
+  h_p_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Transverse momentum of Global Muon
+  h_pt_gmu_b4 = fs->make<TH1D>("b4_GM_pT", "GM pT", 200, 0., 200.);
+  h_pt_gmu_b4->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_gmu_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Pseudorapidity of Global Muon
+  h_eta_gmu_b4 = fs->make<TH1D>("b4_GM_eta", "GM eta", 140, -3.5, 3.5);
+  h_eta_gmu_b4->GetXaxis()->SetTitle("eta");
+  h_eta_gmu_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Phi of Global Muon
+  h_phi_gmu = fs->make<TH1D>("GM_phi", "GM phi", 314, -3.15, 3.15);
+  h_phi_gmu->GetXaxis()->SetTitle("Phi");
+  h_phi_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Chi square of Global Muon
+  h_chi2_gmu = fs->make<TH1D>("GM_chi2", "GM chi2", 300, 0., 150.);
+  h_chi2_gmu->GetXaxis()->SetTitle("Chi2");
+  h_chi2_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Number of degrees of freedom of Global Muon
+  h_ndof_gmu = fs->make<TH1D>("GM_ndof", "GM NDoF", 100, 0., 100.);
+  h_ndof_gmu->GetXaxis()->SetTitle("Ndof");
+  h_ndof_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Normalized chi square of Global Muon
+  h_normchi2_gmu = fs->make<TH1D>("GM_normchi2", "GM NormChi2", 200, 0., 20.);
+  h_normchi2_gmu->GetXaxis()->SetTitle("NormalizedChi2");
+  h_normchi2_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Validhits of Global Muon
+  h_validhits_gmu = fs->make<TH1D>("GM_validhits", "GM ValidHits", 100, 0., 100.);
+  h_validhits_gmu->GetXaxis()->SetTitle("Number of valid hits");
+  h_validhits_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // Pixelhits of Global Muon
+  h_pixelhits_gmu = fs->make<TH1D>("GM_pixelhits", "GM Pixelhits", 14, 0., 14.);
+  h_pixelhits_gmu->GetXaxis()->SetTitle("Munber of pixel hits");
+  h_pixelhits_gmu->GetYaxis()->SetTitle("Number of Events");
+
+  // pT of Global Muon after cuts
+  h_pt_gmu_after = fs->make<TH1D>("after_GM_pT", "GM pT", 200, 0., 200.);
+  h_pt_gmu_after->GetXaxis()->SetTitle("pT of global muons (GeV/c)");
+  h_pt_gmu_after->GetYaxis()->SetTitle("Number of Events");
+
+  // eta of Global Muon after cuts
+  h_eta_gmu_after = fs->make<TH1D>("after_GM_eta", "GM Eta", 140, -3.5, 3.5);
+  h_eta_gmu_after->GetXaxis()->SetTitle("eta");
+  h_eta_gmu_after->GetYaxis()->SetTitle("Number of Events");
+
+  //-------------------- End of control plot dimuon example --------------------//
+
+  //------------------------- Reco Muon control plots --------------------------//
+
+  // Momentum of Reco Muon 
+  h_p_reco = fs->make<TH1D>("RM_momentum", "RM Momentum", 200, 0., 200.);
+  h_p_reco->GetXaxis()->SetTitle("Momentum (GeV/c)");
+  h_p_reco->GetYaxis()->SetTitle("Number of Events");
+
+  // pT of Reco Muon
+  h_pt_reco_b4 = fs->make<TH1D>("b4_RM_pt", "RM pT", 200, 0., 200.);
+  h_pt_reco_b4->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_reco_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Eta of Reco Muon
+  h_eta_reco_b4 = fs->make<TH1D>("b4_RM_eta", "RM Eta", 140, -3.5, 3.5);
+  h_eta_reco_b4->GetXaxis()->SetTitle("eta");
+  h_eta_reco_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Phi of Reco Muon
+  h_phi_reco = fs->make<TH1D>("RM_phi", "RM Phi", 314, -3.15, 3.15);
+  h_phi_reco->GetXaxis()->SetTitle("Phi");
+  h_phi_reco->GetYaxis()->SetTitle("Number of Events");
+
+  // Chi of Reco Muon
+  h_chi2_reco = fs->make<TH1D>("RM_chi2", "RM Chi2", 500, 0., 100.);
+  h_chi2_reco->GetXaxis()->SetTitle("Chi2");
+  h_chi2_reco->GetYaxis()->SetTitle("Number of Events");
+
+  // No. of degrees of freedom of Reco Muon
+  h_ndof_reco = fs->make<TH1D>("RM_Ndof", "RM NDoF", 60, 0., 60.);
+  h_ndof_reco->GetXaxis()->SetTitle("Ndof");
+  h_ndof_reco->GetYaxis()->SetTitle("Number of Events");
+
+  // Normalizedchi2 of Reco Muon
+  h_normchi2_reco = fs->make<TH1D>("RM_NormChi2", "RM NormChi2", 200, 0., 20.);
+  h_normchi2_reco->GetXaxis()->SetTitle("NormalizedChi2");
+  h_normchi2_reco->GetYaxis()->SetTitle("Number of Events");
+
+  // No. of valid muon hits of Reco Muon
+  h_goodhit = fs->make<TH1D>("RM_goodMuonChamberHit", "RM Mu Hit", 40, 0., 40.);
+  h_goodhit->GetXaxis()->SetTitle("Number of muon valid hits");
+  h_goodhit->GetYaxis()->SetTitle("Number of Events");
+
+  // Transverse impact parameter with respect to primary vertex of Reco Muon
+  h_dxy_mu = fs->make<TH1D>("RM_dxy", "RM dxy", 100, 0., 1.);
+  h_dxy_mu->GetXaxis()->SetTitle("Transverse impact parameter w.r.t. BS");
+  h_dxy_mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Relative isolation of Reco Muon
+  h_relPFIso_mu = fs->make<TH1D>("RM_RelPFIso", "R.PFIso", 100, 0., 5.);
+  h_relPFIso_mu->GetXaxis()->SetTitle("Relative Isolation mu");
+  h_relPFIso_mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Relative isolation of Reco Muon after cuts
+  h_relPFIso_mu_after=fs->make<TH1D>("after_RM_RelPFIso", "R.PFIso", 100, 0., 5.);
+  h_relPFIso_mu_after->GetXaxis()->SetTitle("Relative Isolation mu");
+  h_relPFIso_mu_after->GetYaxis()->SetTitle("Number of Events");
+
+  // Validhits of Reco Muon
+  h_validhits_mu = fs->make<TH1D>("RM_validhits", "RM ValidHits", 100, 0., 100.);
+  h_validhits_mu->GetXaxis()->SetTitle("Number of valid hits");
+  h_validhits_mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Pixelhits of Reco Muon
+  h_pixelhits_mu = fs->make<TH1D>("RM_pixelhits", "RM Pixelhits", 14, 0., 14.);
+  h_pixelhits_mu->GetXaxis()->SetTitle("Munber of pixel hits");
+  h_pixelhits_mu->GetYaxis()->SetTitle("Number of Events");
+
+  // pT reco muon after cuts for Z to 2mu
+  h_pt_after_Zto2mu = fs->make<TH1D>("after_RM_pt_Z2mu", "Mu pT", 200, 0., 200.);
+  h_pt_after_Zto2mu->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_after_Zto2mu->GetYaxis()->SetTitle("Number of Events");
+
+  // Eta reco muon after cuts for Z to 2mu
+  h_eta_after_Zto2mu=fs->make<TH1D>("after_RM_eta_Z2mu","Mu eta", 140, -3.5, 3.5);
+  h_eta_after_Zto2mu->GetXaxis()->SetTitle("Eta");
+  h_eta_after_Zto2mu->GetYaxis()->SetTitle("Number of Events");
+
+  // pT reco muon after cuts
+  h_pt_after = fs->make<TH1D>("after_RM_pt", "Muon pT", 200, 0., 200.); 
+  h_pt_after->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_after->GetYaxis()->SetTitle("Number of Events");
+
+  // Eta reco muon after cuts
+  h_eta_after = fs->make<TH1D>("after_RM_eta", "Muon eta", 140, -3.5, 3.5);
+  h_eta_after->GetXaxis()->SetTitle("eta");
+  h_eta_after->GetYaxis()->SetTitle("Number of Events");
+
+  // 2mu2e case
+  // Relative isolation of 2mu for 2mu2e after cuts
+  h_relPFIso_2mu_after=fs->make<TH1D>("after_relPFIso_2mu","R.PFIso", 50, 0., 5.);
+  h_relPFIso_2mu_after->GetXaxis()->SetTitle("Relative Isolation mu");
+  h_relPFIso_2mu_after->GetYaxis()->SetTitle("Number of Events");
+
+  // Relative isolation of 2e for 2mu2e after cuts
+  h_relPFIso_2e_after = fs->make<TH1D>("after_relPFIso_2e","R.PFIso", 50, 0., 5.);
+  h_relPFIso_2e_after->GetXaxis()->SetTitle("Relative Isolation e");
+  h_relPFIso_2e_after->GetYaxis()->SetTitle("Number of Events");
+
+  // pT muon after cuts for 2mu2e
+  h_pt_after_2mu2e = fs->make<TH1D>("after_pt_2mu2e", "Muon pT", 200, 0., 200.); 
+  h_pt_after_2mu2e->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_after_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Eta muon after cuts for 2mu2e
+  h_eta_after_2mu2e=fs->make<TH1D>("after_eta_2mu2e", "Muon eta", 140, -3.5, 3.5);
+  h_eta_after_2mu2e->GetXaxis()->SetTitle("eta");
+  h_eta_after_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  //---------------------- End of Reco Muon control plots ----------------------//
+
+  //-------------------------- Electron control plots --------------------------//
+
+  // Electron momentum
+  h_p_e = fs->make<TH1D>("e_momentum", "Electron momentum", 200, 0., 200.);
+  h_p_e->GetXaxis()->SetTitle("Momentum (GeV/c)");
+  h_p_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron eT
+  h_et_e = fs->make<TH1D>("e_eT", "Electron eT", 200, 0., 200.);
+  h_et_e->GetXaxis()->SetTitle("eT (GeV/c)");
+  h_et_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron pT before cuts
+  h_pt_e_b4 = fs->make<TH1D>("b4_e_pT", "Electron pT", 200, 0, 200.);
+  h_pt_e_b4->GetXaxis()->SetTitle("pT (GeV/c)");
+  h_pt_e_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron eta before cuts
+  h_eta_e_b4 = fs->make<TH1D>("b4_e_eta", "Electron eta", 140, -3.5, 3.5);
+  h_eta_e_b4->GetXaxis()->SetTitle("eta");
+  h_eta_e_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron phi
+  h_phi_e = fs->make<TH1D>("e_phi", "Electron phi", 314, -3.17, 3.17);
+  h_phi_e->GetXaxis()->SetTitle("Phi");
+  h_phi_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron SuperCluster (SC) eta
+  h_sc_eta = fs->make<TH1D>("e_SC_eta", "Electron SC eta", 140, -3.5, 3.5);
+  h_sc_eta->GetXaxis()->SetTitle("Super Cluster Eta");
+  h_sc_eta->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron super cluster rawenergy
+  h_sc_rawE = fs->make<TH1D>("e_SC_rawE", "Electron SC rawE", 200, 0., 200.);
+  h_sc_rawE->GetXaxis()->SetTitle("Super Cluster Energy");
+  h_sc_rawE->GetYaxis()->SetTitle("Number of Events");
+
+  // Relative isolation electron
+  h_relPFIso_e = fs->make<TH1D>("e_RelPFIso", "R.PFIso", 100, 0., 5.);
+  h_relPFIso_e->GetXaxis()->SetTitle("Relative Isolation e");
+  h_relPFIso_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Relative isolation electron after cuts
+  h_relPFIso_e_after = fs->make<TH1D>("after_e_RelPFIso", "R.PFIso", 100, 0., 5.);
+  h_relPFIso_e_after->GetXaxis()->SetTitle("Relative Isolation e");
+  h_relPFIso_e_after->GetYaxis()->SetTitle("Number of Events");
+
+  // Just for checking the relation of pT and RelPFIso
+  double Iso[12]={0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.5, 10.};
+  h_relPFIso_pt_e=fs->make<TH2D>("e_RelPFIso_pT","R.PFIso 2D",11,Iso,100,0., 50.);
+  h_relPFIso_pt_e->GetXaxis()->SetTitle("Relative Isolation e");
+  h_relPFIso_pt_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Transverse impact parameter with respect to primary vertex for Electron
+  h_dxy_e = fs->make<TH1D>("e_dxy", "Electron dxy", 100, 0., 1.);
+  h_dxy_e->GetXaxis()->SetTitle("Transverse impact parameter w.r.t. primvtx");
+  h_dxy_e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron pT after cuts for Zto2e
+  h_pt_e_after_Zto2e = fs->make<TH1D>("after_e_pT_Zto2e", "e pT", 240, 0., 120.);
+  h_pt_e_after_Zto2e->GetXaxis()->SetTitle("Electron pT (GeV/c)");
+  h_pt_e_after_Zto2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron eta after cuts for Zto2e
+  h_eta_e_after_Zto2e=fs->make<TH1D>("after_e_eta_Zto2e","e eta", 140, -3.5, 3.5);
+  h_eta_e_after_Zto2e->GetXaxis()->SetTitle("Eta");
+  h_eta_e_after_Zto2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron pT after cuts
+  h_pt_e_after = fs->make<TH1D>("after_e_pT", "Electron pT", 240, 0., 120.);
+  h_pt_e_after->GetXaxis()->SetTitle("Electron pT (GeV/c)");
+  h_pt_e_after->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron eta after cuts
+  h_eta_e_after = fs->make<TH1D>("after_e_eta", "Electron eta", 140, -3.5, 3.5);
+  h_eta_e_after->GetXaxis()->SetTitle("eta");
+  h_eta_e_after->GetYaxis()->SetTitle("Number of Events");
+
+  // 2mu2e
+  // Electron pT after cuts for 2mu2e
+  h_pt_e_after_2mu2e = fs->make<TH1D>("after_e_pT_2mu2e", "e pT", 240, 0., 120.);
+  h_pt_e_after_2mu2e->GetXaxis()->SetTitle("Electron pT (GeV/c)");
+  h_pt_e_after_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // Electron eta after cuts for 2mu2e
+  h_eta_e_after_2mu2e=fs->make<TH1D>("after_e_eta_2mu2e","e eta", 140, -3.5, 3.5);
+  h_eta_e_after_2mu2e->GetXaxis()->SetTitle("eta");
+  h_eta_e_after_2mu2e->GetYaxis()->SetTitle("Number of Events");
+
+  // SIP for muon
+  h_SIP3d_mu_b4 = fs->make<TH1D>("SIP3d_mu", "SIP_3D for Muon", 100, 0., 10.);
+  h_SIP3d_mu_b4->GetXaxis()->SetTitle("SIP_3D");
+  h_SIP3d_mu_b4->GetYaxis()->SetTitle("Number of Events");
+
+  // SIP for electron
+  h_SIP3d_e_b4 = fs->make<TH1D>("SIP3d_e", "SIP_3D for Electron", 100, 0., 10.);
+  h_SIP3d_e_b4->GetXaxis()->SetTitle("SIP_3D");
+  h_SIP3d_e_b4->GetYaxis()->SetTitle("Number of Events");
+
+  h_misshite = fs->make<TH1D>("e_misshit", "e track missing hits", 5, 0., 5.);
+  h_misshite->GetXaxis()->SetTitle("gsfTrack Hit type");
+  h_misshite->GetYaxis()->SetTitle("Number of Events");
 
 }
 
-HiggsDemoAnalyzer::~HiggsDemoAnalyzer() {
+HiggsDemoAnalyzerGit::~HiggsDemoAnalyzerGit() {
   //do anything here that needs to be done at destruction time
   // (e.g. close files, deallocate resources etc.)
 }
@@ -345,14 +889,11 @@ HiggsDemoAnalyzer::~HiggsDemoAnalyzer() {
 //
 
 // ------------ method called for each event  ------------//
-void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+void HiggsDemoAnalyzerGit::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 // **********************************************
 // here each relevant event will get analyzed 
 // **********************************************
-
-  value_mu_n = 0;
-  value_el_n = 0;
 
   nRun  = iEvent.run();
   nEvt  = (iEvent.id()).event(); // iEvent: no class named event()
@@ -370,11 +911,11 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
   // Event is to be analyzed
 
-  edm::LogInfo("Demo");
-  /*<< "Starting to analyze \n"
+  edm::LogInfo("Demo")
+  << "Starting to analyze \n"
   << "Event number: " << (iEvent.id()).event()
   << ", Run number: " << iEvent.run()
-  << ", Lumisection: " << iEvent.luminosityBlock();*/
+  << ", Lumisection: " << iEvent.luminosityBlock();
 
   //------------------Load (relevant) Event information------------------------//
   // INFO: Getting Data From an Event
@@ -386,8 +927,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   // INFO: globalMuons
   // NB: note that when using keyword "globalMuons" getByLabel-function returns 
   // reco::TrackCollection
-  //edm::Handle<reco::TrackCollection> tracks;
-  //iEvent.getByLabel("generalTracks", tracks);
+  edm::Handle<reco::TrackCollection> tracks;
+  iEvent.getByLabel("generalTracks", tracks);
 
   edm::Handle<reco::TrackCollection> gmuons;
   iEvent.getByLabel("globalMuons", gmuons);
@@ -400,7 +941,6 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
   edm::Handle<reco::VertexCollection> primvtxHandle;
   iEvent.getByLabel("offlinePrimaryVertices", primvtxHandle);
-  math::XYZPoint pv(primvtxHandle->begin()->position());
 
   edm::Handle<reco::GsfElectronCollection> electrons;
   iEvent.getByLabel("gsfElectrons",electrons);
@@ -516,9 +1056,9 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   sqme = (0.0005109989) * (0.0005109989);
   mZ = 91.1876;
 
-  /*h_globalmu_size->Fill(gmuons->size());
+  h_globalmu_size->Fill(gmuons->size());
   h_recomu_size->Fill(muons->size());
-  h_e_size->Fill(electrons->size());*/
+  h_e_size->Fill(electrons->size());
 
   ///////////////////////////////////////////////////////////////////////////////
   /////////////////////// Global Muon Collection Start //////////////////////////
@@ -537,14 +1077,14 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       const reco::Track &iMuon = (*gmuons)[t];
       const reco::HitPattern& p = iMuon.hitPattern();
 
-      /*h_p_gmu->Fill(iMuon.p());
+      h_p_gmu->Fill(iMuon.p());
       h_pt_gmu_b4->Fill(iMuon.pt());
       h_eta_gmu_b4->Fill(iMuon.eta());
       h_phi_gmu->Fill(iMuon.phi());
 
       h_chi2_gmu->Fill(iMuon.chi2());
       h_ndof_gmu->Fill(iMuon.ndof());
-      h_normchi2_gmu->Fill(iMuon.normalizedChi2());*/
+      h_normchi2_gmu->Fill(iMuon.normalizedChi2());
 
       // Counter
       int GM_ValidHits = 0;
@@ -560,8 +1100,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	  if (p.validHitFilter(hit)) {GM_ValidHits++;}
 	}
 
-      /*h_validhits_gmu->Fill(GM_ValidHits);
-      h_pixelhits_gmu->Fill(GM_PixelHits);*/
+      h_validhits_gmu->Fill(GM_ValidHits);
+      h_pixelhits_gmu->Fill(GM_PixelHits);
 
       if (GM_ValidHits >= 12 && GM_PixelHits >= 2 && iMuon.normalizedChi2() < 4.0)
 	{
@@ -599,18 +1139,14 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       // some muons might not have valid track references
       if (itMuon.isPFMuon() && itMuon.isPFIsolationValid() && (itMuon.globalTrack()).isNonnull())
 	{
-
-
-    
-
-	  /*h_p_reco->Fill(itMuon.p());
+	  h_p_reco->Fill(itMuon.p());
 	  h_pt_reco_b4->Fill(itMuon.pt());
 	  h_eta_reco_b4->Fill(itMuon.eta());
 	  h_phi_reco->Fill(itMuon.phi());
 
 	  h_chi2_reco->Fill((itMuon.globalTrack())->chi2());
 	  h_ndof_reco->Fill((itMuon.globalTrack())->ndof());
-	  h_normchi2_reco->Fill((itMuon.globalTrack())->normalizedChi2());*/
+	  h_normchi2_reco->Fill((itMuon.globalTrack())->normalizedChi2());
 
 	  //======= Use Particle Flow (PF) Muon & PF relative isolation ========//
 
@@ -619,15 +1155,15 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 			 (itMuon.pfIsolationR04()).sumNeutralHadronEt + 
 			 (itMuon.pfIsolationR04()).sumPhotonEt) / itMuon.pt(); 
 
-	  // h_relPFIso_mu->Fill(relPFIso_mu);
+	  h_relPFIso_mu->Fill(relPFIso_mu);
 	  
 	  // Checking hit pattern info
 	  const reco::HitPattern& RM_p = (itMuon.globalTrack())->hitPattern();
 
 	  goodhit = RM_p.numberOfValidMuonHits();
-	  // h_goodhit->Fill(goodhit);
+	  h_goodhit->Fill(goodhit);
 
-	  // h_dxy_mu->Fill((itMuon.globalTrack())->dxy(point));
+	  h_dxy_mu->Fill((itMuon.globalTrack())->dxy(point));
 
 	  IP3d_mu = sqrt((itMuon.globalTrack()->dxy(point) * itMuon.globalTrack()->dxy(point)) + (itMuon.globalTrack()->dz(point) * itMuon.globalTrack()->dz(point)));
 	  
@@ -635,7 +1171,7 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	  
 	  SIP3d_mu = IP3d_mu / ErrIP3d_mu;
 
-	  // h_SIP3d_mu_b4->Fill(SIP3d_mu);
+	  h_SIP3d_mu_b4->Fill(SIP3d_mu);
 
 	  int RM_ValidHits = 0;
 	  int RM_PixelHits = 0;
@@ -650,16 +1186,14 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	      if (RM_p.validHitFilter(hit)) {RM_ValidHits++;}
 	    }
 
-	  // h_validhits_mu->Fill(RM_ValidHits);
-	  // h_pixelhits_mu->Fill(RM_PixelHits);
+	  h_validhits_mu->Fill(RM_ValidHits);
+	  h_pixelhits_mu->Fill(RM_PixelHits);
 
 	  if (std::abs(SIP3d_mu) < 4. && std::abs((itMuon.globalTrack())->dxy(point)) < 0.5 && std::abs((itMuon.globalTrack())->dz(point)) < 1. && relPFIso_mu < 0.4)
 	    {
 	      if (itMuon.pt() > 5. && std::abs(itMuon.eta()) < 2.4)
 		{
 		  vIdPtmu.push_back( std::make_pair(u, itMuon.pt()) );
-
-      
 		}
 	    }
 	} // end of if (itMuon.isPFMuon().........
@@ -692,7 +1226,7 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	   ErrIP3d_e = sqrt ( (iElectron.gsfTrack()->d0Error() * iElectron.gsfTrack()->d0Error()) + (iElectron.gsfTrack()->dzError() * iElectron.gsfTrack()->dzError()) );
 	   SIP3d_e = IP3d_e / ErrIP3d_e;
 
-	   /*h_SIP3d_e_b4->Fill(SIP3d_e);
+	   h_SIP3d_e_b4->Fill(SIP3d_e);
 
 	   h_p_e->Fill(iElectron.p());
 	   h_et_e->Fill(iElectron.et());
@@ -701,18 +1235,18 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	   h_phi_e->Fill(iElectron.phi());
 	   h_sc_eta->Fill((iElectron.superCluster())->eta());
 	   h_sc_rawE->Fill(std::abs((iElectron.superCluster())->rawEnergy()));
-	   h_misshite->Fill(misshits);*/
+	   h_misshite->Fill(misshits);
       
 	   // Relative isolation for electron
 	   relPFIso_e = ((iElectron.pfIsolationVariables()).chargedHadronIso +
 			 (iElectron.pfIsolationVariables()).neutralHadronIso +
 			 (iElectron.pfIsolationVariables()).photonIso) /iElectron.pt();
 	
-	   /*h_relPFIso_e->Fill(relPFIso_e);
+	   h_relPFIso_e->Fill(relPFIso_e);
 
 	   h_relPFIso_pt_e->Fill(relPFIso_e, iElectron.pt());
 
-	   h_dxy_e->Fill((iElectron.gsfTrack())->dxy(point));*/
+	   h_dxy_e->Fill((iElectron.gsfTrack())->dxy(point));
 
 	   // Electron selection
 	   if (iElectron.pt() > 7.)
@@ -756,9 +1290,9 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   nGoodRecoMuon = vIdPtmu.size(); 
   nGoodElectron = vIdPte.size(); 
 
-  // h_nggmu->Fill(nGoodGlobalMuon);
-  // h_ngmu->Fill(nGoodRecoMuon);
-  // h_nge->Fill(nGoodElectron);
+  h_nggmu->Fill(nGoodGlobalMuon);
+  h_ngmu->Fill(nGoodRecoMuon);
+  h_nge->Fill(nGoodElectron);
 
   ////////////////////////////////////////////////////////////////////////////////
   /////////////////////// All calculation start here /////////////////////////////
@@ -778,17 +1312,17 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	  for (unsigned i = 0; i < vIdPt.size(); i++)
 	    {
 	      // These pT and eta are filled after all the cuts
-	      // h_pt_gmu_after->Fill(vIdPt.at(i).second); // access directly .second as the second pair is already pT
-	      // h_eta_gmu_after->Fill(((*gmuons)[vIdPt.at(i).first]).eta());
+	      h_pt_gmu_after->Fill(vIdPt.at(i).second); // access directly .second as the second pair is already pT
+	      h_eta_gmu_after->Fill(((*gmuons)[vIdPt.at(i).first]).eta());
 	    }
 
 	  s1 = sqrt(((gmuon1.p()) * (gmuon1.p()) + sqm1) * ((gmuon2.p()) * (gmuon2.p()) + sqm1));
 	  s2 = gmuon1.px() * gmuon2.px() + gmuon1.py() * gmuon2.py() + gmuon1.pz() * gmuon2.pz();
 	  s = sqrt(2.0 * (sqm1 + (s1 - s2)));
 
-	  /*h_m1_gmu->Fill(s);
+	  h_m1_gmu->Fill(s);
 	  h_m2_gmu->Fill(s);
-	  h_m3_gmu->Fill(s);*/
+	  h_m3_gmu->Fill(s);
 
 	}
     }
@@ -808,15 +1342,15 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    {
 	      // These pT and eta are filled after all the cuts
 	      // access directly .second as the second pair is already pT
-	      // h_pt_after_Zto2mu->Fill(vIdPtmu.at(i).second); 
-	      // h_eta_after_Zto2mu->Fill(((*muons)[vIdPtmu.at(i).first]).eta());
+	      h_pt_after_Zto2mu->Fill(vIdPtmu.at(i).second); 
+	      h_eta_after_Zto2mu->Fill(((*muons)[vIdPtmu.at(i).first]).eta());
 	    }
 
 	  s1 = sqrt(((muon1.p()) * (muon1.p()) + sqm1) * ((muon2.p()) * (muon2.p()) + sqm1));
 	  s2 = muon1.px() * muon2.px() + muon1.py() * muon2.py() + muon1.pz() * muon2.pz();
 	  s = sqrt(2.0 * (sqm1 + (s1 - s2)));
 
-	  // h_mZ_2mu->Fill(s);
+	  h_mZ_2mu->Fill(s);
 	}
     }
 
@@ -836,15 +1370,15 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    {
 	      // These pT and eta are filled after all the cuts
 	      // access directly .second as the second pair is already pT
-	      // h_pt_e_after_Zto2e->Fill(vIdPte.at(i).second); 
-	      // h_eta_e_after_Zto2e->Fill((((*electrons)[vIdPte.at(i).first]).superCluster())->eta());
+	      h_pt_e_after_Zto2e->Fill(vIdPte.at(i).second); 
+	      h_eta_e_after_Zto2e->Fill((((*electrons)[vIdPte.at(i).first]).superCluster())->eta());
 	    }
 
 	  s1 = sqrt(((elec1.p()) * (elec1.p()) + sqme) * ((elec2.p()) * (elec2.p()) + sqme));
 	  s2 = elec1.px() * elec2.px() + elec1.py() * elec2.py() + elec1.pz() * elec2.pz();
 	  s = sqrt(2.0 * (sqme + (s1 - s2)));
 
-	  // h_mZ_2e->Fill(s);
+	  h_mZ_2e->Fill(s);
 	}
     }
 
@@ -892,8 +1426,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ12 = sqrt((eZ12 * eZ12) - (pZ12 * pZ12));
 		  mZ34 = sqrt((eZ34 * eZ34) - (pZ34 * pZ34));
 
-		  // if (mZ12 > 0.) h_mZ12_4mu->Fill(mZ12);
-		  // if (mZ34 > 0.) h_mZ34_4mu->Fill(mZ34);
+		  if (mZ12 > 0.) h_mZ12_4mu->Fill(mZ12);
+		  if (mZ34 > 0.) h_mZ34_4mu->Fill(mZ34);
 		}
 	    }
 
@@ -933,8 +1467,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ13 = sqrt((eZ13 * eZ13) - (pZ13 * pZ13));
 		  mZ24 = sqrt((eZ24 * eZ24) - (pZ24 * pZ24));
 
-		  // if (mZ13 > 0.) h_mZ13_4mu->Fill(mZ13);
-		  // if (mZ24 > 0.) h_mZ24_4mu->Fill(mZ24);
+		  if (mZ13 > 0.) h_mZ13_4mu->Fill(mZ13);
+		  if (mZ24 > 0.) h_mZ24_4mu->Fill(mZ24);
 		}
 	    }
 
@@ -972,8 +1506,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ14 = sqrt((eZ14 * eZ14) - (pZ14 * pZ14));
 		  mZ23 = sqrt((eZ23 * eZ23) - (pZ23 * pZ23));
 
-		  // if (mZ14 > 0.) h_mZ14_4mu->Fill(mZ14);
-		  // if (mZ23 > 0.) h_mZ23_4mu->Fill(mZ23);
+		  if (mZ14 > 0.) h_mZ14_4mu->Fill(mZ14);
+		  if (mZ23 > 0.) h_mZ23_4mu->Fill(mZ23);
 		}
 	    }
 
@@ -1110,91 +1644,12 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		}
 	    }
 
-
-    // put it in this section - do a loop or something to get all four objects into the tree - similar to what is happening below
-
-    
-        //value_mu_isGM[value_mu_n] = it->isGlobalMuon();
-        //auto iso04 = it->pfIsolationR04();
-        //value_mu_pfrelisoDB[value_mu_n] = (iso04.sumChargedHadronPt + iso04.sumNeutralHadronEt + iso04.sumPhotonEt - 0.5*iso04.sumPUPt)/it->pt(); // OD version is not DB corrected
-        //value_mu_pfreliso[value_mu_n] = (iso04.sumChargedHadronPt + iso04.sumNeutralHadronEt + iso04.sumPhotonEt)/it->pt(); // OD version
-        //value_mu_dxy[value_mu_n] = trk->dxy(pv);
-        //value_mu_dz[value_mu_n] = trk->dz(pv);
-        //float d3 = sqrt( pow(trk->dxy(pv),2) + pow(trk->dz(pv),2) );
-        //float d3Err = sqrt( pow(trk->d0Error(),2) + pow(trk->dzError(),2) );
-        //value_mu_SIP3d[value_mu_n] = d3/d3Err;
-
-
-    value_mu_n = 4;
-        
-    value_mu_pt[0] = muon1.pt();
-    value_mu_pt[1] = muon2.pt();
-    value_mu_pt[2] = muon3.pt();
-    value_mu_pt[3] = muon4.pt();
-
-    value_mu_eta[0] = muon1.eta();
-		value_mu_eta[1] = muon2.eta();
-		value_mu_eta[2] = muon3.eta();
-		value_mu_eta[3] = muon4.eta();
-
-    value_mu_phi[0] = muon1.phi();
-		value_mu_phi[1] = muon2.phi();
-		value_mu_phi[2] = muon3.phi();
-		value_mu_phi[3] = muon4.phi();
-
-		value_mu_charge[0] = muon1.charge();
-		value_mu_charge[1] = muon2.charge();
-		value_mu_charge[2] = muon3.charge();
-		value_mu_charge[3] = muon4.charge();
-
-    value_mu_mass[0] = mass4mu;
-		value_mu_mass[1] = mass4mu;
-		value_mu_mass[2] = mass4mu;
-		value_mu_mass[3] = mass4mu;
-
-    //I'm not sure about this one
-    value_mu_isGM[0] = muon1.isGlobalMuon();
-		value_mu_isGM[1] = muon2.isGlobalMuon();
-		value_mu_isGM[2] = muon3.isGlobalMuon();
-		value_mu_isGM[3] = muon4.isGlobalMuon();
-
-    //Or this one
-    value_mu_pfrelisoDB[0] = ((muon1.pfIsolationR04()).sumChargedHadronPt + (muon1.pfIsolationR04()).sumNeutralHadronEt + (muon1.pfIsolationR04()).sumPhotonEt - 0.5*(muon1.pfIsolationR04()).sumPUPt) / (muon1.pt());
-		value_mu_pfrelisoDB[1] = ((muon2.pfIsolationR04()).sumChargedHadronPt + (muon2.pfIsolationR04()).sumNeutralHadronEt + (muon2.pfIsolationR04()).sumPhotonEt - 0.5*(muon2.pfIsolationR04()).sumPUPt) / (muon2.pt());
-		value_mu_pfrelisoDB[2] = ((muon3.pfIsolationR04()).sumChargedHadronPt + (muon3.pfIsolationR04()).sumNeutralHadronEt + (muon3.pfIsolationR04()).sumPhotonEt - 0.5*(muon3.pfIsolationR04()).sumPUPt) / (muon3.pt());
-		value_mu_pfrelisoDB[3] = ((muon4.pfIsolationR04()).sumChargedHadronPt + (muon4.pfIsolationR04()).sumNeutralHadronEt + (muon4.pfIsolationR04()).sumPhotonEt - 0.5*(muon4.pfIsolationR04()).sumPUPt) / (muon4.pt());
-
-    //This one as well
-    value_mu_pfreliso[0] = ((muon1.pfIsolationR04()).sumChargedHadronPt + (muon1.pfIsolationR04()).sumNeutralHadronEt + (muon1.pfIsolationR04()).sumPhotonEt) / (muon1.pt());
-		value_mu_pfreliso[1] = ((muon2.pfIsolationR04()).sumChargedHadronPt + (muon2.pfIsolationR04()).sumNeutralHadronEt + (muon2.pfIsolationR04()).sumPhotonEt) / (muon2.pt());
-		value_mu_pfreliso[2] = ((muon3.pfIsolationR04()).sumChargedHadronPt + (muon3.pfIsolationR04()).sumNeutralHadronEt + (muon3.pfIsolationR04()).sumPhotonEt) / (muon3.pt());
-		value_mu_pfreliso[3] = ((muon4.pfIsolationR04()).sumChargedHadronPt + (muon4.pfIsolationR04()).sumNeutralHadronEt + (muon4.pfIsolationR04()).sumPhotonEt) / (muon4.pt());
-
-    value_mu_dxy[0] = muon1.globalTrack()->dxy(pv);
-		value_mu_dxy[1] = muon2.globalTrack()->dxy(pv);
-		value_mu_dxy[2] = muon3.globalTrack()->dxy(pv);
-		value_mu_dxy[3] = muon4.globalTrack()->dxy(pv);
-
-    value_mu_dz[0] = muon1.globalTrack()->dz(pv);
-		value_mu_dz[1] = muon2.globalTrack()->dz(pv);
-		value_mu_dz[2] = muon3.globalTrack()->dz(pv);
-		value_mu_dz[3] = muon4.globalTrack()->dz(pv);
-
-    value_mu_SIP3d[0] = (sqrt(pow(muon1.globalTrack()->dxy(pv),2) + pow(muon1.globalTrack()->dz(pv),2)))/(sqrt(pow(muon1.globalTrack()->d0Error(),2) + pow(muon1.globalTrack()->dzError(),2)));
-    value_mu_SIP3d[1] = (sqrt(pow(muon2.globalTrack()->dxy(pv),2) + pow(muon2.globalTrack()->dz(pv),2)))/(sqrt(pow(muon2.globalTrack()->d0Error(),2) + pow(muon2.globalTrack()->dzError(),2)));
-    value_mu_SIP3d[2] = (sqrt(pow(muon3.globalTrack()->dxy(pv),2) + pow(muon3.globalTrack()->dz(pv),2)))/(sqrt(pow(muon3.globalTrack()->d0Error(),2) + pow(muon3.globalTrack()->dzError(),2)));
-    value_mu_SIP3d[3] = (sqrt(pow(muon4.globalTrack()->dxy(pv),2) + pow(muon4.globalTrack()->dz(pv),2)))/(sqrt(pow(muon4.globalTrack()->d0Error(),2) + pow(muon4.globalTrack()->dzError(),2)));
-
-    muonTree = true;
-
-
-
 	   if (ptZadaug) {
 	    if (mZa > 40. && mZa < 120.) {
 	      if (mZb > 12. && mZb < 120.) {
 
-		// h_mZa_4mu->Fill(mZa);
-		// h_mZb_4mu->Fill(mZb);
+		h_mZa_4mu->Fill(mZa);
+		h_mZb_4mu->Fill(mZb);
 
 		// 4 vector
 		p4Za.SetPxPyPzE(pxZa, pyZa, pzZa, eZa);
@@ -1252,21 +1707,12 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		E_mu3 = sqrt((muon3.p() * muon3.p()) + sqm1);
 		E_mu4 = sqrt((muon4.p() * muon4.p()) + sqm1);
 
-
-
-
 		if (mass4mu > 70.)
 		  {
-		    /*h_m1_m4mu->Fill(mass4mu);
+		    h_m1_m4mu->Fill(mass4mu);
 		    h_m2_m4mu->Fill(mass4mu);
 		    h_m3_m4mu->Fill(mass4mu);
-		    h_m4_m4mu->Fill(mass4mu);*/
-
-        if (E_mu1 != -999) {
-          if (myfile4mu.is_open()){
-			      myfile4mu << E_mu1 << ", " << E_mu2 << ", " << E_mu3 << ", " << E_mu4 << ", " << px_mu1 << ", " << px_mu2 << ", " << px_mu3 << ", " << px_mu4 << ", " << py_mu1 << ", " << py_mu2 << ", " << py_mu3 << ", " << py_mu4 << ", " << pz_mu1 << ", " << pz_mu2 << ", " << pz_mu3 << ", " << pz_mu4 << "\n";
-          }
-        }
+		    h_m4_m4mu->Fill(mass4mu);
 
 		    for (unsigned i = 0; i < vIdPtmu.size(); i++)
 		      {
@@ -1274,10 +1720,10 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 				       (((*muons)[vIdPtmu.at(i).first]).pfIsolationR04()).sumNeutralHadronEt +
 				       (((*muons)[vIdPtmu.at(i).first]).pfIsolationR04()).sumPhotonEt) / (((*muons)[vIdPtmu.at(i).first]).pt()); 
 
-			/*h_relPFIso_mu_after->Fill(relPFIso_mu);
+			h_relPFIso_mu_after->Fill(relPFIso_mu);
 
 			h_pt_after->Fill(vIdPtmu.at(i).second);
-			h_eta_after->Fill(((*muons)[vIdPtmu.at(i).first]).eta());*/
+			h_eta_after->Fill(((*muons)[vIdPtmu.at(i).first]).eta());
 		      }
 		    // t1->Fill();
 		  }
@@ -1328,8 +1774,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ12 = sqrt((eZ12 * eZ12) - (pZ12 * pZ12));
 		  mZ34 = sqrt((eZ34 * eZ34) - (pZ34 * pZ34));
 
-		  // if (mZ12 > 0.) h_mZ12_4e->Fill(mZ12);
-		  // if (mZ34 > 0.) h_mZ34_4e->Fill(mZ34);
+		  if (mZ12 > 0.) h_mZ12_4e->Fill(mZ12);
+		  if (mZ34 > 0.) h_mZ34_4e->Fill(mZ34);
 		}
 	    }
 
@@ -1367,8 +1813,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ13 = sqrt((eZ13 * eZ13) - (pZ13 * pZ13));
 		  mZ24 = sqrt((eZ24 * eZ24) - (pZ24 * pZ24));
 
-		  // if (mZ13 > 0.) h_mZ13_4e->Fill(mZ13);
-		  // if (mZ24 > 0.) h_mZ24_4e->Fill(mZ24);
+		  if (mZ13 > 0.) h_mZ13_4e->Fill(mZ13);
+		  if (mZ24 > 0.) h_mZ24_4e->Fill(mZ24);
 		}
 	    }
 
@@ -1404,8 +1850,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ14 = sqrt((eZ14 * eZ14) - (pZ14 * pZ14));
 		  mZ23 = sqrt((eZ23 * eZ23) - (pZ23 * pZ23));
 
-		  // if (mZ14 > 0.) h_mZ14_4e->Fill(mZ14);
-		  // if (mZ23 > 0.) h_mZ23_4e->Fill(mZ23);
+		  if (mZ14 > 0.) h_mZ14_4e->Fill(mZ14);
+		  if (mZ23 > 0.) h_mZ23_4e->Fill(mZ23);
 		}
 	    }
 
@@ -1543,81 +1989,11 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		}
 	    }
 
-          //value_el_pt[value_el_n] = it->pt();
-          //value_el_eta[value_el_n] = it->eta(); // USE THEIR SYNTAX Done
-          //value_el_phi[value_el_n] = it->phi(); // USE THEIR SYNTAX Done
-          //value_el_charge[value_el_n] = it->charge();
-          //value_el_rawE[value_el_n] = it->superCluster()->rawEnergy(); // USE THEIR SYNTAX
-          //value_el_misshits[value_el_n] = it->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
-          //auto iso03 = it->pfIsolationVariables();
-          //value_el_pfreliso[value_el_n] = (iso03.chargedHadronIso + iso03.neutralHadronIso + iso03.photonIso)/it->pt();
-          //auto trk = it->gsfTrack();
-          //value_el_dxy[value_el_n] = trk->dxy(pv);
-          //value_el_dz[value_el_n] = trk->dz(pv);
-          //float d3 = sqrt( pow(trk->dxy(pv),2) + pow(trk->dz(pv),2) );
-          //float d3Err = sqrt( pow(trk->d0Error(),2) + pow(trk->dzError(),2) );
-          //value_el_SIP3d[value_el_n] = d3/d3Err;
-      
-      value_el_n = 4;
-    
-      value_el_pt[0] = elec1.pt();
-      value_el_pt[1] = elec2.pt();
-      value_el_pt[2] = elec3.pt();
-      value_el_pt[3] = elec4.pt();
-
-      value_el_eta[0] = elec1.eta();
-		  value_el_eta[1] = elec2.eta();
-		  value_el_eta[2] = elec3.eta();
-		  value_el_eta[3] = elec4.eta();
-
-      value_el_phi[0] = elec1.phi();
-		  value_el_phi[1] = elec2.phi();
-		  value_el_phi[2] = elec3.phi();
-		  value_el_phi[3] = elec4.phi();
-      
-      value_el_charge[0] = elec1.charge();
-		  value_el_charge[1] = elec2.charge();
-		  value_el_charge[2] = elec3.charge();
-		  value_el_charge[3] = elec4.charge();
-
-      value_el_rawE[0] = elec1.superCluster()->rawEnergy();
-      value_el_rawE[1] = elec2.superCluster()->rawEnergy();
-      value_el_rawE[2] = elec3.superCluster()->rawEnergy();
-      value_el_rawE[3] = elec4.superCluster()->rawEnergy();
-
-      value_el_misshits[0] = ((elec1.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[1] = ((elec2.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[2] = ((elec3.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[3] = ((elec4.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-
-      value_el_pfreliso[0] = ((elec1.pfIsolationVariables()).chargedHadronIso + (elec1.pfIsolationVariables()).neutralHadronIso + (elec1.pfIsolationVariables()).photonIso) / (elec1.pt());
-      value_el_pfreliso[1] = ((elec2.pfIsolationVariables()).chargedHadronIso + (elec2.pfIsolationVariables()).neutralHadronIso + (elec2.pfIsolationVariables()).photonIso) / (elec2.pt());
-      value_el_pfreliso[2] = ((elec3.pfIsolationVariables()).chargedHadronIso + (elec3.pfIsolationVariables()).neutralHadronIso + (elec3.pfIsolationVariables()).photonIso) / (elec3.pt());
-      value_el_pfreliso[3] = ((elec4.pfIsolationVariables()).chargedHadronIso + (elec4.pfIsolationVariables()).neutralHadronIso + (elec4.pfIsolationVariables()).photonIso) / (elec4.pt());
-
-      value_el_dxy[0] = elec1.gsfTrack()->dxy(pv);
-      value_el_dxy[1] = elec2.gsfTrack()->dxy(pv);
-      value_el_dxy[2] = elec3.gsfTrack()->dxy(pv);
-      value_el_dxy[3] = elec4.gsfTrack()->dxy(pv);
-
-      value_el_dz[0] = elec1.gsfTrack()->dz(pv);
-      value_el_dz[1] = elec2.gsfTrack()->dz(pv);
-      value_el_dz[2] = elec3.gsfTrack()->dz(pv);
-      value_el_dz[3] = elec4.gsfTrack()->dz(pv);
-
-      value_el_SIP3d[0] = (sqrt(pow(elec1.gsfTrack()->dxy(pv),2) + pow(elec1.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec1.gsfTrack()->d0Error(),2) + pow(elec1.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[1] = (sqrt(pow(elec2.gsfTrack()->dxy(pv),2) + pow(elec2.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec2.gsfTrack()->d0Error(),2) + pow(elec2.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[2] = (sqrt(pow(elec3.gsfTrack()->dxy(pv),2) + pow(elec3.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec3.gsfTrack()->d0Error(),2) + pow(elec3.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[3] = (sqrt(pow(elec4.gsfTrack()->dxy(pv),2) + pow(elec4.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec4.gsfTrack()->d0Error(),2) + pow(elec4.gsfTrack()->dzError(),2)));
-
-      elecTree = true;
-
-
 	  if (ptZadaug) {
 	    if (mZa > 40. && mZa < 120.) {
 	      if (mZb > 12. && mZb < 120.) {
-		// h_mZa_4e->Fill(mZa);
-		// h_mZb_4e->Fill(mZb);
+		h_mZa_4e->Fill(mZa);
+		h_mZb_4e->Fill(mZb);
 		
 		// Calculate 4 elec
 		p4Za.SetPxPyPzE(pxZa, pyZa, pzZa, eZa);
@@ -1677,16 +2053,10 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
 		if (mass4e > 70.)
 		  {
-		    /*h_m1_m4e->Fill(mass4e);
+		    h_m1_m4e->Fill(mass4e);
 		    h_m2_m4e->Fill(mass4e);
 		    h_m3_m4e->Fill(mass4e);
-		    h_m4_m4e->Fill(mass4e);*/
-        
-        if (E_mu1 != -999) {
-          if (myfile4e.is_open()){
-			      myfile4e << E_e1 << ", " << E_e2 << ", " << E_e3 << ", " << E_e4 << ", " << px_e1 << ", " << px_e2 << ", " << px_e3 << ", " << px_e4 << ", " << py_e1 << ", " << py_e2 << ", " << py_e3 << ", " << py_e4 << ", " << pz_e1 << ", " << pz_e2 << ", " << pz_e3 << ", " << pz_e4 << "\n";
-          }
-        }
+		    h_m4_m4e->Fill(mass4e);
 
 		    for (unsigned i = 0; i < vIdPte.size(); i++)
 		      {
@@ -1694,10 +2064,10 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 				      (((*electrons)[vIdPte.at(i).first]).pfIsolationVariables()).neutralHadronIso +
 				      (((*electrons)[vIdPte.at(i).first]).pfIsolationVariables()).photonIso) / (((*electrons)[vIdPte.at(i).first]).pt());
 
-			// h_relPFIso_e_after->Fill(relPFIso_e);
+			h_relPFIso_e_after->Fill(relPFIso_e);
 
-			// h_pt_e_after->Fill(vIdPte.at(i).second);
-			// h_eta_e_after->Fill((((*electrons)[vIdPte.at(i).first]).superCluster())->eta());
+			h_pt_e_after->Fill(vIdPte.at(i).second);
+			h_eta_e_after->Fill((((*electrons)[vIdPte.at(i).first]).superCluster())->eta());
 		      }
 		    // t2->Fill();
 		  }
@@ -1748,8 +2118,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		  mZ12 = sqrt((eZ12 * eZ12) - (pZ12 * pZ12));
 		  mZ34 = sqrt((eZ34 * eZ34) - (pZ34 * pZ34));
 
-		  // if (mZ12 > 0.) h_mZmu_2mu2e->Fill(mZ12);
-		  // if (mZ34 > 0.) h_mZe_2mu2e->Fill(mZ34);
+		  if (mZ12 > 0.) h_mZmu_2mu2e->Fill(mZ12);
+		  if (mZ34 > 0.) h_mZe_2mu2e->Fill(mZ34);
 
 		}
 	    }
@@ -1798,98 +2168,11 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	      mZb  = mZ12;
 	  }
 
-    //cout << "top of 2mu2e tree input outside the if statement" << endl;
-  
-    
-
-    if (elecTree == false && muonTree == false) {
-
-      value_el_n = 2;
-      value_mu_n = 2;
-      //cout << "top of 2mu2e tree input inside the if statement" << endl;
-      value_el_pt[0] = elec1.pt();
-      value_el_pt[1] = elec2.pt();
-
-      //myfile4e << elec1.pt() << ", " << elec2.pt() << ", " << value_el_pt[0] << ", " << value_el_pt[1] << endl;
-
-      value_el_eta[0] = elec1.eta();
-		  value_el_eta[1] = elec2.eta();
-
-      value_el_phi[0] = elec1.phi();
-		  value_el_phi[1] = elec2.phi();
-      
-      value_el_charge[0] = elec1.charge();
-		  value_el_charge[1] = elec2.charge();
-
-      value_el_rawE[0] = elec1.superCluster()->rawEnergy();
-      value_el_rawE[1] = elec2.superCluster()->rawEnergy();
-
-      value_el_misshits[0] = ((elec1.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[1] = ((elec2.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-
-      value_el_pfreliso[0] = ((elec1.pfIsolationVariables()).chargedHadronIso + (elec1.pfIsolationVariables()).neutralHadronIso + (elec1.pfIsolationVariables()).photonIso) / (elec1.pt());
-      value_el_pfreliso[1] = ((elec2.pfIsolationVariables()).chargedHadronIso + (elec2.pfIsolationVariables()).neutralHadronIso + (elec2.pfIsolationVariables()).photonIso) / (elec2.pt());
-      
-      value_el_dxy[0] = elec1.gsfTrack()->dxy(pv);
-      value_el_dxy[1] = elec2.gsfTrack()->dxy(pv);
-      
-      value_el_dz[0] = elec1.gsfTrack()->dz(pv);
-      value_el_dz[1] = elec2.gsfTrack()->dz(pv);
-      
-      value_el_SIP3d[0] = (sqrt(pow(elec1.gsfTrack()->dxy(pv),2) + pow(elec1.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec1.gsfTrack()->d0Error(),2) + pow(elec1.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[1] = (sqrt(pow(elec2.gsfTrack()->dxy(pv),2) + pow(elec2.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec2.gsfTrack()->d0Error(),2) + pow(elec2.gsfTrack()->dzError(),2)));
-    
-      value_mu_pt[0] = muon1.pt();
-      value_mu_pt[1] = muon2.pt();
-
-      //myfile << muon1.pt() << ", " << muon2.pt() << ", " << value_mu_pt[0] << ", " << value_mu_pt[1] << endl;
-
-      value_mu_eta[0] = muon1.eta();
-		  value_mu_eta[1] = muon2.eta();
-
-      //myfile4mu << muon1.eta() << ", " << muon2.eta() << ", " << value_mu_eta[0] << ", " << value_mu_eta[1] << endl;
-		
-      value_mu_phi[0] = muon1.phi();
-		  value_mu_phi[1] = muon2.phi();
-		
-		  value_mu_charge[0] = muon1.charge();
-		  value_mu_charge[1] = muon2.charge();
-		
-      value_mu_mass[0] = mass2mu2e;
-		  value_mu_mass[1] = mass2mu2e;
-		
-    //I'm not sure about this one
-      value_mu_isGM[0] = muon1.isGlobalMuon();
-		  value_mu_isGM[1] = muon2.isGlobalMuon();
-		
-    //Or this one
-      value_mu_pfrelisoDB[0] = ((muon1.pfIsolationR04()).sumChargedHadronPt + (muon1.pfIsolationR04()).sumNeutralHadronEt + (muon1.pfIsolationR04()).sumPhotonEt - 0.5*(muon1.pfIsolationR04()).sumPUPt) / (muon1.pt());
-		  value_mu_pfrelisoDB[1] = ((muon2.pfIsolationR04()).sumChargedHadronPt + (muon2.pfIsolationR04()).sumNeutralHadronEt + (muon2.pfIsolationR04()).sumPhotonEt - 0.5*(muon2.pfIsolationR04()).sumPUPt) / (muon2.pt());
-		
-    //This one as well
-      value_mu_pfreliso[0] = ((muon1.pfIsolationR04()).sumChargedHadronPt + (muon1.pfIsolationR04()).sumNeutralHadronEt + (muon1.pfIsolationR04()).sumPhotonEt) / (muon1.pt());
-		  value_mu_pfreliso[1] = ((muon2.pfIsolationR04()).sumChargedHadronPt + (muon2.pfIsolationR04()).sumNeutralHadronEt + (muon2.pfIsolationR04()).sumPhotonEt) / (muon2.pt());
-		
-      value_mu_dxy[0] = muon1.globalTrack()->dxy(pv);
-		  value_mu_dxy[1] = muon2.globalTrack()->dxy(pv);
-		
-      value_mu_dz[0] = muon1.globalTrack()->dz(pv);
-		  value_mu_dz[1] = muon2.globalTrack()->dz(pv);
-		
-      value_mu_SIP3d[0] = (sqrt(pow(muon1.globalTrack()->dxy(pv),2) + pow(muon1.globalTrack()->dz(pv),2)))/(sqrt(pow(muon1.globalTrack()->d0Error(),2) + pow(muon1.globalTrack()->dzError(),2)));
-      value_mu_SIP3d[1] = (sqrt(pow(muon2.globalTrack()->dxy(pv),2) + pow(muon2.globalTrack()->dz(pv),2)))/(sqrt(pow(muon2.globalTrack()->d0Error(),2) + pow(muon2.globalTrack()->dzError(),2)));
-      //cout << "end of the tree input inside of the loop" << endl;
-    
-    
-    }
-    //cout << "end of the tree input outside of the loop" << endl;
-
-
 	  if (ptZadaug) {
 	    if (mZa > 40. && mZa < 120.) {
 	      if (mZb > 12. && mZb < 120.) {
-		// h_mZa_2mu2e->Fill(mZa);
-		// h_mZb_2mu2e->Fill(mZb);
+		h_mZa_2mu2e->Fill(mZa);
+		h_mZb_2mu2e->Fill(mZb);
 
 		// Now combine these 2 muons and 2 electrons
  
@@ -1952,17 +2235,10 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
 		if (mass2mu2e > 70.)
 		  {
-		    /*h_m1_m2mu2e->Fill(mass2mu2e);
+		    h_m1_m2mu2e->Fill(mass2mu2e);
 		    h_m2_m2mu2e->Fill(mass2mu2e);
 		    h_m3_m2mu2e->Fill(mass2mu2e);
-		    h_m4_m2mu2e->Fill(mass2mu2e);*/
-
-        cout << "filling the txt file" << endl;
-        if (E_2mu1 != -999) {
-		      if (myfile2mu2e.is_open()){
-			      myfile2mu2e << E_2mu1 << ", " << E_2mu2 << ", " << E_2e1 << ", " << E_2e2 << ", " << px_2mu1 << ", " << px_2mu2 << ", " << px_2e1 << ", " << px_2e2 << ", " << py_2mu1 << ", " << py_2mu2 << ", " << py_2e1 << ", " << py_2e2 << ", " << pz_2mu1 << ", " << pz_2mu2 << ", " << pz_2e1 << ", " << pz_2e2 << "\n";
-          }
-        }
+		    h_m4_m2mu2e->Fill(mass2mu2e);
 
 		    for (unsigned i = 0; i < vIdPtmu.size(); i++)
 		      {
@@ -1970,9 +2246,9 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 					(((*muons)[vIdPtmu.at(i).first]).pfIsolationR04()).sumNeutralHadronEt +
 					(((*muons)[vIdPtmu.at(i).first]).pfIsolationR04()).sumPhotonEt ) / (((*muons)[vIdPtmu.at(i).first]).pt());
 
-			/*h_relPFIso_2mu_after->Fill(relPFIso_mu);
+			h_relPFIso_2mu_after->Fill(relPFIso_mu);
 			h_pt_after_2mu2e->Fill(vIdPtmu.at(i).second);
-			h_eta_after_2mu2e->Fill(((*muons)[vIdPtmu.at(i).first]).eta());*/
+			h_eta_after_2mu2e->Fill(((*muons)[vIdPtmu.at(i).first]).eta());
 		      }
 
 		    for (unsigned i = 0; i < vIdPte.size(); i++)
@@ -1981,9 +2257,9 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 				      (((*electrons)[vIdPte.at(i).first]).pfIsolationVariables()).neutralHadronIso +
 				      (((*electrons)[vIdPte.at(i).first]).pfIsolationVariables()).photonIso) / (((*electrons)[vIdPte.at(i).first]).pt()); 
 	      
-			/*h_relPFIso_2e_after->Fill(relPFIso_e);
+			h_relPFIso_2e_after->Fill(relPFIso_e);
 			h_pt_e_after_2mu2e->Fill(vIdPte.at(i).second);
-			h_eta_e_after_2mu2e->Fill(((*electrons)[vIdPte.at(i).first]).eta());*/
+			h_eta_e_after_2mu2e->Fill(((*electrons)[vIdPte.at(i).first]).eta());
 		      }
 		    // t3->Fill();
 		  }
@@ -1995,25 +2271,17 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
   //============================= ZZ/ZZ*To2mu2e end ============================//
   
-  // Fill event
-  tree->Fill();
-
-} // HiggsDemoAnalyzer::analyze ends
+} // HiggsDemoAnalyzerGit::analyze ends
 
 
 // ------ method called once each job just before starting event loop ---------//
 
-void HiggsDemoAnalyzer::beginJob() {
+void HiggsDemoAnalyzerGit::beginJob() {
 
   // *******************************************************
   // book the ntuple for the surviving 4 lepton candidates *
   // in the mass range 70 < m4l < 181 GeV                  *
   // *******************************************************
-
-
-    myfile4mu.open ("4mu.txt", std::ios_base::app);
-    myfile4e.open ("4e.txt", std::ios_base::app);
-    myfile2mu2e.open ("2mu2e.txt", std::ios_base::app);
 
 /*
   t1 = new TTree("tree4mu", "tree4mu");
@@ -2192,13 +2460,9 @@ void HiggsDemoAnalyzer::beginJob() {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void HiggsDemoAnalyzer::endJob() {
-  myfile4mu.close();
-  myfile4e.close();
-  myfile2mu2e.close();
-  myfile.close();
+void HiggsDemoAnalyzerGit::endJob() {
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(HiggsDemoAnalyzer);
+DEFINE_FWK_MODULE(HiggsDemoAnalyzerGit);
 
