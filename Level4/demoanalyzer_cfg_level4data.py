@@ -7,7 +7,7 @@ process = cms.Process("Demo")
 
 # intialize MessageLogger and output report
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.cerr.threshold = 'INFO'
+process.MessageLogger.cerr.threshold = 'WARNING'
 process.MessageLogger.categories.append('Demo')
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(
         limit = cms.untracked.int32(-1)
@@ -51,7 +51,7 @@ process.source = cms.Source("PoolSource",
 # (9058 events)
 #process.source = cms.Source("PoolSource",
 #    fileNames = cms.untracked.vstring(
-#         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/F2878994-766C-E211-8693-E0CB4EA0A939.root'
+#         'FILENAMES'
 #    )    
 #)
 
