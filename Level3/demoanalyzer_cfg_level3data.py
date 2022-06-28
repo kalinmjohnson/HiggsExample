@@ -50,7 +50,11 @@ import FWCore.Utilities.FileUtils as FileUtils
 # (9058 events)
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/F2878994-766C-E211-8693-E0CB4EA0A939.root'
+         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/0002ACB4-C96C-E211-A96F-20CF3027A628.root', 
+         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/001B9F9E-C46C-E211-B700-001EC9D80789.root', 
+         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/001DED49-B96D-E211-BCEB-90E6BA442F30.root', 
+         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/0025BA25-D66D-E211-8506-20CF305B0509.root', 
+         'root://eospublic.cern.ch//eos/opendata/cms/Run2012C/DoubleMuParked/AOD/22Jan2013-v1/10000/00299F07-2A6D-E211-964A-001EC9D2577D.root'
     )    
 )
 
