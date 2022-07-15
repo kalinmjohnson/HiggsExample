@@ -1558,59 +1558,59 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
           //float d3Err = sqrt( pow(trk->d0Error(),2) + pow(trk->dzError(),2) );
           //value_el_SIP3d[value_el_n] = d3/d3Err;
       
-      value_el_n = 4;
+	  value_el_n = 4;
     
-      value_el_pt[0] = elec1.pt();
-      value_el_pt[1] = elec2.pt();
-      value_el_pt[2] = elec3.pt();
-      value_el_pt[3] = elec4.pt();
+	  value_el_pt[0] = elec1.pt();
+	  value_el_pt[1] = elec2.pt();
+	  value_el_pt[2] = elec3.pt();
+	  value_el_pt[3] = elec4.pt();
 
-      value_el_eta[0] = elec1.eta();
-		  value_el_eta[1] = elec2.eta();
-		  value_el_eta[2] = elec3.eta();
-		  value_el_eta[3] = elec4.eta();
+	  value_el_eta[0] = elec1.eta();
+	  value_el_eta[1] = elec2.eta();
+	  value_el_eta[2] = elec3.eta();
+	  value_el_eta[3] = elec4.eta();
 
-      value_el_phi[0] = elec1.phi();
-		  value_el_phi[1] = elec2.phi();
-		  value_el_phi[2] = elec3.phi();
-		  value_el_phi[3] = elec4.phi();
+	  value_el_phi[0] = elec1.phi();
+	  value_el_phi[1] = elec2.phi();
+	  value_el_phi[2] = elec3.phi();
+	  value_el_phi[3] = elec4.phi();
       
-      value_el_charge[0] = elec1.charge();
-		  value_el_charge[1] = elec2.charge();
-		  value_el_charge[2] = elec3.charge();
-		  value_el_charge[3] = elec4.charge();
+	  value_el_charge[0] = elec1.charge();
+	  value_el_charge[1] = elec2.charge();
+	  value_el_charge[2] = elec3.charge();
+	  value_el_charge[3] = elec4.charge();
 
-      value_el_rawE[0] = elec1.superCluster()->rawEnergy();
-      value_el_rawE[1] = elec2.superCluster()->rawEnergy();
-      value_el_rawE[2] = elec3.superCluster()->rawEnergy();
-      value_el_rawE[3] = elec4.superCluster()->rawEnergy();
+	  value_el_rawE[0] = elec1.superCluster()->rawEnergy();
+	  value_el_rawE[1] = elec2.superCluster()->rawEnergy();
+	  value_el_rawE[2] = elec3.superCluster()->rawEnergy();
+	  value_el_rawE[3] = elec4.superCluster()->rawEnergy();
 
-      value_el_misshits[0] = ((elec1.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[1] = ((elec2.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[2] = ((elec3.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
-      value_el_misshits[3] = ((elec4.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
+	  value_el_misshits[0] = ((elec1.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
+	  value_el_misshits[1] = ((elec2.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
+	  value_el_misshits[2] = ((elec3.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
+	  value_el_misshits[3] = ((elec4.gsfTrack())->trackerExpectedHitsInner()).numberOfHits();
 
-      value_el_pfreliso[0] = ((elec1.pfIsolationVariables()).chargedHadronIso + (elec1.pfIsolationVariables()).neutralHadronIso + (elec1.pfIsolationVariables()).photonIso) / (elec1.pt());
-      value_el_pfreliso[1] = ((elec2.pfIsolationVariables()).chargedHadronIso + (elec2.pfIsolationVariables()).neutralHadronIso + (elec2.pfIsolationVariables()).photonIso) / (elec2.pt());
-      value_el_pfreliso[2] = ((elec3.pfIsolationVariables()).chargedHadronIso + (elec3.pfIsolationVariables()).neutralHadronIso + (elec3.pfIsolationVariables()).photonIso) / (elec3.pt());
-      value_el_pfreliso[3] = ((elec4.pfIsolationVariables()).chargedHadronIso + (elec4.pfIsolationVariables()).neutralHadronIso + (elec4.pfIsolationVariables()).photonIso) / (elec4.pt());
+	  value_el_pfreliso[0] = ((elec1.pfIsolationVariables()).chargedHadronIso + (elec1.pfIsolationVariables()).neutralHadronIso + (elec1.pfIsolationVariables()).photonIso) / (elec1.pt());
+	  value_el_pfreliso[1] = ((elec2.pfIsolationVariables()).chargedHadronIso + (elec2.pfIsolationVariables()).neutralHadronIso + (elec2.pfIsolationVariables()).photonIso) / (elec2.pt());
+	  value_el_pfreliso[2] = ((elec3.pfIsolationVariables()).chargedHadronIso + (elec3.pfIsolationVariables()).neutralHadronIso + (elec3.pfIsolationVariables()).photonIso) / (elec3.pt());
+	  value_el_pfreliso[3] = ((elec4.pfIsolationVariables()).chargedHadronIso + (elec4.pfIsolationVariables()).neutralHadronIso + (elec4.pfIsolationVariables()).photonIso) / (elec4.pt());
 
-      value_el_dxy[0] = elec1.gsfTrack()->dxy(pv);
-      value_el_dxy[1] = elec2.gsfTrack()->dxy(pv);
-      value_el_dxy[2] = elec3.gsfTrack()->dxy(pv);
-      value_el_dxy[3] = elec4.gsfTrack()->dxy(pv);
+	  value_el_dxy[0] = elec1.gsfTrack()->dxy(pv);
+	  value_el_dxy[1] = elec2.gsfTrack()->dxy(pv);
+	  value_el_dxy[2] = elec3.gsfTrack()->dxy(pv);
+	  value_el_dxy[3] = elec4.gsfTrack()->dxy(pv);
 
-      value_el_dz[0] = elec1.gsfTrack()->dz(pv);
-      value_el_dz[1] = elec2.gsfTrack()->dz(pv);
-      value_el_dz[2] = elec3.gsfTrack()->dz(pv);
-      value_el_dz[3] = elec4.gsfTrack()->dz(pv);
+	  value_el_dz[0] = elec1.gsfTrack()->dz(pv);
+	  value_el_dz[1] = elec2.gsfTrack()->dz(pv);
+	  value_el_dz[2] = elec3.gsfTrack()->dz(pv);
+	  value_el_dz[3] = elec4.gsfTrack()->dz(pv);
 
-      value_el_SIP3d[0] = (sqrt(pow(elec1.gsfTrack()->dxy(pv),2) + pow(elec1.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec1.gsfTrack()->d0Error(),2) + pow(elec1.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[1] = (sqrt(pow(elec2.gsfTrack()->dxy(pv),2) + pow(elec2.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec2.gsfTrack()->d0Error(),2) + pow(elec2.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[2] = (sqrt(pow(elec3.gsfTrack()->dxy(pv),2) + pow(elec3.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec3.gsfTrack()->d0Error(),2) + pow(elec3.gsfTrack()->dzError(),2)));
-      value_el_SIP3d[3] = (sqrt(pow(elec4.gsfTrack()->dxy(pv),2) + pow(elec4.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec4.gsfTrack()->d0Error(),2) + pow(elec4.gsfTrack()->dzError(),2)));
+	  value_el_SIP3d[0] = (sqrt(pow(elec1.gsfTrack()->dxy(pv),2) + pow(elec1.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec1.gsfTrack()->d0Error(),2) + pow(elec1.gsfTrack()->dzError(),2)));
+	  value_el_SIP3d[1] = (sqrt(pow(elec2.gsfTrack()->dxy(pv),2) + pow(elec2.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec2.gsfTrack()->d0Error(),2) + pow(elec2.gsfTrack()->dzError(),2)));
+	  value_el_SIP3d[2] = (sqrt(pow(elec3.gsfTrack()->dxy(pv),2) + pow(elec3.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec3.gsfTrack()->d0Error(),2) + pow(elec3.gsfTrack()->dzError(),2)));
+	  value_el_SIP3d[3] = (sqrt(pow(elec4.gsfTrack()->dxy(pv),2) + pow(elec4.gsfTrack()->dz(pv),2)))/(sqrt(pow(elec4.gsfTrack()->d0Error(),2) + pow(elec4.gsfTrack()->dzError(),2)));
 
-      elecTree = true;
+	  elecTree = true;
 
 
 	  if (ptZadaug) {
