@@ -1682,11 +1682,11 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		    h_m3_m4e->Fill(mass4e);
 		    h_m4_m4e->Fill(mass4e);*/
         
-        if (E_mu1 != -999) {
-          if (myfile4e.is_open()){
-			      myfile4e << E_e1 << ", " << E_e2 << ", " << E_e3 << ", " << E_e4 << ", " << px_e1 << ", " << px_e2 << ", " << px_e3 << ", " << px_e4 << ", " << py_e1 << ", " << py_e2 << ", " << py_e3 << ", " << py_e4 << ", " << pz_e1 << ", " << pz_e2 << ", " << pz_e3 << ", " << pz_e4 << "\n";
-          }
-        }
+      		if (E_mu1 != -999) {
+        		if (myfile4e.is_open()){
+				      myfile4e << E_e1 << ", " << E_e2 << ", " << E_e3 << ", " << E_e4 << ", " << px_e1 << ", " << px_e2 << ", " << px_e3 << ", " << px_e4 << ", " << py_e1 << ", " << py_e2 << ", " << py_e3 << ", " << py_e4 << ", " << pz_e1 << ", " << pz_e2 << ", " << pz_e3 << ", " << pz_e4 << "\n";
+          		}
+    		}
 
 		    for (unsigned i = 0; i < vIdPte.size(); i++)
 		      {
