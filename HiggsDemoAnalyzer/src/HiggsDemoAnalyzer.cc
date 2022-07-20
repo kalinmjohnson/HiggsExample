@@ -1294,6 +1294,7 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   // Now, for these goodelectrons, pair up and calculate mass
   if (nGoodElectron >= 4)
     {
+	  myfile4e << "thing three" << endl;
       const reco::GsfElectron &elec1 = (*electrons)[vIdPte.at(0).first];
       const reco::GsfElectron &elec2 = (*electrons)[vIdPte.at(1).first];
       const reco::GsfElectron &elec3 = (*electrons)[vIdPte.at(2).first];
@@ -1675,6 +1676,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		E_e3 = elec3.energy();
 		E_e4 = elec4.energy();
 
+		myfile4e << "thing two" << endl;
+
 		if (mass4e > 70.)
 		  {
 		    /*h_m1_m4e->Fill(mass4e);
@@ -1684,7 +1687,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
         
       		if (E_mu1 != -999) {
         		if (myfile4e.is_open()){
-				      myfile4e << E_e1 << ", " << E_e2 << ", " << E_e3 << ", " << E_e4 << ", " << px_e1 << ", " << px_e2 << ", " << px_e3 << ", " << px_e4 << ", " << py_e1 << ", " << py_e2 << ", " << py_e3 << ", " << py_e4 << ", " << pz_e1 << ", " << pz_e2 << ", " << pz_e3 << ", " << pz_e4 << "\n";
+				      myfile4e << "thing one" << endl;
+					  myfile4e << E_e1 << ", " << E_e2 << ", " << E_e3 << ", " << E_e4 << ", " << px_e1 << ", " << px_e2 << ", " << px_e3 << ", " << px_e4 << ", " << py_e1 << ", " << py_e2 << ", " << py_e3 << ", " << py_e4 << ", " << pz_e1 << ", " << pz_e2 << ", " << pz_e3 << ", " << pz_e4 << "\n";
           		}
     		}
 
@@ -1797,8 +1801,6 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	      pTZb = pTZ12;
 	      mZb  = mZ12;
 	  }
-
-    //cout << "top of 2mu2e tree input outside the if statement" << endl;
   
     
 
@@ -1806,11 +1808,8 @@ void HiggsDemoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
       value_el_n = 2;
       value_mu_n = 2;
-      //cout << "top of 2mu2e tree input inside the if statement" << endl;
       value_el_pt[0] = elec1.pt();
       value_el_pt[1] = elec2.pt();
-
-      //myfile4e << elec1.pt() << ", " << elec2.pt() << ", " << value_el_pt[0] << ", " << value_el_pt[1] << endl;
 
       value_el_eta[0] = elec1.eta();
 		  value_el_eta[1] = elec2.eta();
