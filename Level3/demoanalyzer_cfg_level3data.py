@@ -24,7 +24,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 # set the number of events to be skipped (if any) at end of file below
 
 # define JSON file for 2012 data
-goodJSON = '../datasets/Cert_160404-180252_7TeV_ReRecoNov08_Collisions11_JSON.txt'
+goodJSON = '../datasets/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt'
 
 myLumis = LumiList.LumiList(filename = goodJSON).getCMSSWString().split(',')
 
